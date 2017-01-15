@@ -1,7 +1,5 @@
-import GraphicsConfiguration from "elite/options/graphics/GraphicsConfiguration";
-import Journal from "elite/journal";
-
-GraphicsConfiguration.load();
-Journal.create();
-
+const {ipcRenderer} = require("electron");
+ipcRenderer.on("journal", (event, message) => {
+  console.log(message);
+});
 console.log("Hello World");
