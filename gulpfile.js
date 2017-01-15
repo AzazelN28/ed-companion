@@ -111,6 +111,11 @@ gulp.task("templates", () => {
     .pipe(gulp.dest("dist"));
 });
 
+gulp.task("electron", () => {
+  gulp.src("src/electron/electron.js")
+    .pipe(gulp.dest("dist"));
+});
+
 /**
  * Tarea que construye las imágenes.
  */
@@ -128,7 +133,7 @@ gulp.task("fonts", () => {
 /**
  * Tarea que construye los scripts.
  */
-gulp.task("scripts", () => bundle());
+gulp.task("scripts", ["electron"], () => bundle());
 
 /**
  * Tarea que construye los estilos.
@@ -162,6 +167,7 @@ gulp.task("watch", ["build"], () => {
  */
 gulp.task("browser-sync", () => {
   bs.init({
+    open: false,
     server: {
       localOnly: true,
       baseDir: "dist"
@@ -170,7 +176,7 @@ gulp.task("browser-sync", () => {
     if (!err) {
       const electron = require("electron");
       const options = {
-        env: extend({NODE_ENV: 'development'}, env, process.env),
+        env: Object.assign({ NODE_ENV: "development" }, process.env),
         stdio: 'inherit'
       };
       cp.spawn(electron, ["dist/electron.js"], options);
