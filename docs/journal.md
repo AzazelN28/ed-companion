@@ -140,7 +140,7 @@ The rest of this document describes each type of event that might be written int
 ### 2.4 Localisation
 Some values written into the log use internal symbol IDs, as used by the game to lookup localised text strings. These have the form "$symbolname;"
 
-When such values are written into the log, the iocalised version of the string will also be written (UTF8 encoded), as a separate key-value pair, with "_Localised" appended to the key name.
+When such values are written into the log, the iocalised version of the string will also be written (UTF8 encoded), as a separate key-value pair, with "\_Localised" appended to the key name.
 
 Examples throughout this document have not been updated with this extra localised format:
 
@@ -1410,4 +1410,3 @@ Empire ranks:
 
 CQC ranks:
 0=’Helpless’, 1=’Mostly Helpless’, 2=’Amateur’, 3=’Semi Professional’, 4=’Professional’, 5=’Champion’, 6=’Hero’, 7=’Legend’, 8=’Elite’
-

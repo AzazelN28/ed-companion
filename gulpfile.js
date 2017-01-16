@@ -177,7 +177,7 @@ gulp.task("browser-sync", () => {
       const electron = require("electron");
       const options = {
         env: Object.assign({ NODE_ENV: "development" }, process.env),
-        stdio: 'inherit'
+        stdio: "inherit"
       };
       cp.spawn(electron, ["dist/electron.js"], options);
     }

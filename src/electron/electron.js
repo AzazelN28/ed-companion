@@ -2,7 +2,7 @@ const electron = require("electron");
 const path = require("path");
 const fs = require("fs");
 const chokidar = require("chokidar");
-const { BrowserWindow, app } = electron;
+const { BrowserWindow, app, shell } = electron;
 
 let mainWindow = null;
 
@@ -30,6 +30,10 @@ app.on("ready", () => {
 const re = /Journal\.([0-9]{12})\.([0-9]+)\.log/;
 
 function getOptionsPath(...args) {
+  if (process.env.OPTIONS_PATH) {
+    return process.env.OPTIONS_PATH;
+  }
+
   if (process.platform === "darwin") {
     return path.join(
       app.getPath("home"),
@@ -51,9 +55,12 @@ function getOptionsPath(...args) {
       ...args
     );
   }
-  return null;
+  return path.join(app.getPath("appData"), "Frontier Developments", "Elite Dangerous", "Options");
 }
 
+/**
+ * Devuelve si el nombre del archivo es del journal o no.
+ */
 function isJournalFile(filename) {
   return re.test(filename);
 }
@@ -63,6 +70,10 @@ function isJournalFile(filename) {
  * el SO es Windows u OS X)
  */
 function getJournalPath(...args) {
+  if (process.env.JOURNAL_PATH) {
+    return process.env.JOURNAL_PATH;
+  }
+
   if (process.platform === "darwin") {
     return path.join(
       app.getPath("home"),
@@ -81,9 +92,12 @@ function getJournalPath(...args) {
       ...args
     );
   }
-  return null;
+  return path.join(app.getPath("appData"), "Frontier Developments", "Elite Dangerous", "Saved Games");
 }
 
+/**
+ *
+ */
 function getJournalFiles() {
   return new Promise((resolve, reject) => {
     fs.readdir(getJournalPath(), (err, files) => {
@@ -100,9 +114,12 @@ function getJournalFiles() {
 
       return resolve(filteredFiles);
     });
-  });  
+  });
 }
 
+/**
+ *
+ */
 function getJournalFile(filename) {
   return new Promise((resolve, reject) => {
     fs.readFile(getJournalPath(filename), { encoding: "utf8" }, (err, data) => {
@@ -114,6 +131,33 @@ function getJournalFile(filename) {
   });
 }
 
-console.log("Journal's path: ", getJournalPath());
-console.log("Options path: ", getOptionsPath());
+const links = {
+  "ed": {
+    "href": "https://www.elitedangerous.com/",
+    "icon": ""
+  },
+  "edsm": {
+    "href": "https://www.edsm.net/",
+    "icon": ""
+  },
+  "eddb": {
+    "href": "https://eddb.io/",
+    "icon": ""
+  },
+  "inara": {
+    "href": "http://inara.cz/",
+    "icon": ""
+  },
+  "forums": {
+    "href": "https://forums.frontier.co.uk/forumdisplay.php/29-Elite-Dangerous",
+    "icon": ""
+  }
+};
+
+function openLink(link) {
+  shell.openExternal(link.href);
+}
+
+console.log("Journal path:", getJournalPath());
+console.log("Options path:", getOptionsPath());
 console.log("GraphicsConfigurationOverride path:", getOptionsPath("Graphics", "GraphicsConfigurationOverride.xml"));
