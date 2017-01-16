@@ -1,10 +1,10 @@
 const electron = require("electron");
 const path = require("path");
 const fs = require("fs");
+const chokidar = require("chokidar");
 const { BrowserWindow, app } = electron;
 
 let mainWindow = null;
-let currentSize = 0;
 
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") {
@@ -28,10 +28,6 @@ app.on("ready", () => {
 });
 
 const re = /Journal\.([0-9]{12})\.([0-9]+)\.log/;
-
-function isJournalFile(filename) {
-  return re.test(filename);
-}
 
 function getOptionsPath(...args) {
   if (process.platform === "darwin") {
@@ -58,6 +54,14 @@ function getOptionsPath(...args) {
   return null;
 }
 
+function isJournalFile(filename) {
+  return re.test(filename);
+}
+
+/**
+ * Éste método devuelve la ruta del journal (la ruta varía en función de si
+ * el SO es Windows u OS X)
+ */
 function getJournalPath(...args) {
   if (process.platform === "darwin") {
     return path.join(
@@ -80,33 +84,36 @@ function getJournalPath(...args) {
   return null;
 }
 
-console.log("Journal's path: ", getJournalPath());
+function getJournalFiles() {
+  return new Promise((resolve, reject) => {
+    fs.readdir(getJournalPath(), (err, files) => {
+      if (err) {
+        return reject(err);
+      }
 
-function journal(err, stats) {
-  console.log("Growed: ", stats.size - currentSize);
-  const start = currentSize;
-  const end = stats.size;
-  currentSize = stats.size;
-  const stream = fs.createReadStream(getJournalPath(filename), { encoding: "utf-8", start, end });
-  stream.on("data", (chunk) => {
-    const event = JSON.parse(chunk);
-    console.log("Journal event: ", event);
-    if (mainWindow !== null) {
-      mainWindow.webContents.send("journal", event);
-    }
-  });
-  stream.on("end", () => {
-    stream.destroy();
+      const filteredFiles = files.filter(isJournalFile);
+      filteredFiles.sort((a,b) => {
+        const [,ats] = a.match(re);
+        const [,bts] = b.match(re);
+        return parseInt(bts,10) - parseInt(ats,10);
+      });
+
+      return resolve(filteredFiles);
+    });
+  });  
+}
+
+function getJournalFile(filename) {
+  return new Promise((resolve, reject) => {
+    fs.readFile(getJournalPath(filename), { encoding: "utf8" }, (err, data) => {
+      if (err) {
+        return reject(err);
+      }
+      return resolve(data);
+    });
   });
 }
 
-fs.watch(getJournalPath(), (type, filename) => {
-  console.log(type, filename);
-  if (type === "rename" && isJournalFile(filename)) {
-    // El archivo fue creado por el Player's Journal.
-    fs.stat(getJournalPath(filename), journal);
-  } else if (type === "change" && isJournalFile(filename)) {
-    // El archivo fue cambiado por el Player's Journal.
-    fs.stat(getJournalPath(filename), journal);
-  }
-});
+console.log("Journal's path: ", getJournalPath());
+console.log("Options path: ", getOptionsPath());
+console.log("GraphicsConfigurationOverride path:", getOptionsPath("Graphics", "GraphicsConfigurationOverride.xml"));
