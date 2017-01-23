@@ -1,4 +1,4 @@
-[
+export default [
   {
     "file": "lemon_chiffon_dark_orange",
     "name": "Lemon Chiffon / Dark Orange",

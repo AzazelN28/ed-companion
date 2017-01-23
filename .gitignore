@@ -110,7 +110,7 @@ tramp
 
 # cask packages
 .cask/
-dist/
+#dist/
 
 # Flycheck
 flycheck_*.el
@@ -208,3 +208,9 @@ src/assets/images
 src/assets/data/eddb
 
 # End of https://www.gitignore.io/api/linux,osx,windows,vim,emacs,sublimetext,node
+
+dist/electron.js
+dist/index.html
+dist/index.css
+dist/index.js
+dist/index.js.map
