@@ -6,12 +6,20 @@ const { BrowserWindow, app, shell } = electron;
 
 let mainWindow = null;
 
+/**
+ * Cuando se cierren todas las ventanas, salimos
+ * de la aplicación si es diferente de Mac OS X.
+ */
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") {
     app.quit();
   }
 });
 
+/**
+ * Cuando la aplicación esté lista, mostramos una ventana
+ * con varias cosas.
+ */
 app.on("ready", () => {
   mainWindow = new BrowserWindow({
     width: 800,
