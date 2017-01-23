@@ -97,6 +97,7 @@ export class Create extends Component {
               <option value="right">Derecha</option>
               <option value="outfitting">Outfitting</option>
               <option value="radar">Radar</option>
+              <option value="collage">Collage</option>
             </select>
           </div>
         </div>
