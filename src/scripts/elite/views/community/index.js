@@ -5,7 +5,7 @@ export class Community extends Component {
   render() {
     return (
       <div className="Community">
-        Community
+        <h2>Community</h2>
       </div>
     );
   }

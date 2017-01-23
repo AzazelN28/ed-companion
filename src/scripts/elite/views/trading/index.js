@@ -5,7 +5,7 @@ export class Trading extends Component {
   render() {
     return (
       <div className="Trading">
-        Trading
+        <h2>Comercio</h2>
       </div>
     );
   }

@@ -5,7 +5,7 @@ export class Exploration extends Component {
   render() {
     return (
       <div className="Exploration">
-        Exploration
+        <h2>Exploración</h2>
       </div>
     );
   }

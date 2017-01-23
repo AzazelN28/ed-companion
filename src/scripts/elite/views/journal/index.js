@@ -5,7 +5,7 @@ export class Journal extends Component {
   render() {
     return (
       <div className="Journal">
-        Journal
+        <h2>Diario</h2>
       </div>
     );
   }

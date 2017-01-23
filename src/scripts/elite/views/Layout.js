@@ -43,7 +43,9 @@ export class Layout extends Component {
     return (
       <div className="Layout">
         <Navigation />
-        {this.props.children}
+        <div className="Content">
+          {this.props.children}
+        </div>
       </div>
     );
   }
