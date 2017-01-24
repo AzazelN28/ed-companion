@@ -44,3 +44,8 @@ export function UniversalCartographics(props) {
     </svg>
   );
 }
+
+export default {
+  GalNet,
+  UniversalCartographics
+}

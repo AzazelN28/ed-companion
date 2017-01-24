@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router";
-import { GalNet, UniversalCartographics } from "elite/views/icons/Misc";
+import icons from "elite/views/icons";
 
 class Navigation extends Component {
   render() {
@@ -9,27 +9,27 @@ class Navigation extends Component {
         <ul className="Navigation__list">
           <li className="Navigation__item">
             <Link className="Navigation__link" to={{ pathname: "/" }}>
-              <GalNet />
+              <icons.Misc.GalNet />
             </Link>
           </li>
           <li className="Navigation__item">
             <Link className="Navigation__link" to={{ pathname: "/trading" }}>
-              <GalNet />
+              <icons.Misc.GalNet />
             </Link>
           </li>
           <li className="Navigation__item">
             <Link className="Navigation__link" to={{ pathname: "/exploration" }}>
-              <GalNet />
+              <icons.Misc.UniversalCartographics />
             </Link>
           </li>
           <li className="Navigation__item">
             <Link className="Navigation__link" to={{ pathname: "/customization" }}>
-              <GalNet />
+              <icons.Galaxy.Powerplay />
             </Link>
           </li>
           <li className="Navigation__item">
             <Link className="Navigation__link" to={{ pathname: "/community" }}>
-              <GalNet />
+              <icons.Misc.GalNet />
             </Link>
           </li>
         </ul>

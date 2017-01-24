@@ -1,0 +1,17 @@
+{
+  "journal": {
+    "title": "Diario"
+  },
+  "exploration": {
+    "title": "Exploración"
+  },
+  "trading": {
+    "title": "Comercio"
+  },
+  "customization": {
+    "title": "Personalización"
+  },
+  "community": {
+    "title": "Comunidad"
+  }
+}

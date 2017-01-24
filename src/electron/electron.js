@@ -203,28 +203,54 @@ function saveGraphicsConfigurationOverride(matrix = [1,0,0,0,0, 0,1,0,0,0, 0,0,1
   });
 }
 
-const links = {
-  "ed": {
-    "href": "https://www.elitedangerous.com/",
-    "icon": ""
+const GraphicsConfigurationOverride = {
+  save() {
+    return new Promise((resolve,reject) => {
+      if (graphicsConfig.documentElement.childNodes.length === 0) {
+        const guiColour = graphicsConfig.createElement("GUIColour");
+        const guiDefault = graphicsConfig.createElement("Default");
+        const localisationName = graphicsConfig.createElement("LocalisationName");
+        localisationName.textContent = "Standard";
+        const matrixRed = graphicsConfig.createElement("MatrixRed");
+        matrixRed.textContent = matrix.slice(0,3).join(", ");
+        const matrixGreen = graphicsConfig.createElement("MatrixGreen");
+        matrixGreen.textContent = matrix.slice(5,8).join(", ");
+        const matrixBlue = graphicsConfig.createElement("MatrixBlue");
+        matrixBlue.textContent = matrix.slice(10,13).join(", ");
+        graphicsConfig.documentElement.appendChild(guiColour);
+        guiColour.appendChild(guiDefault);
+        guiDefault.appendChild(localisationName);
+        guiDefault.appendChild(matrixRed);
+        guiDefault.appendChild(matrixGreen);
+        guiDefault.appendChild(matrixBlue);
+      } else {
+
+      }
+      console.log(XMLSerializer.serializeToString(graphicsConfig));
+      return resolve();
+      //fs.writeFile(getOptionsPath("Graphics", "GraphicsConfigurationOverride.xml"), { encoding: "utf8" }, XMLSerializer.serializeToString());
+    });
   },
-  "edsm": {
-    "href": "https://www.edsm.net/",
-    "icon": ""
-  },
-  "eddb": {
-    "href": "https://eddb.io/",
-    "icon": ""
-  },
-  "inara": {
-    "href": "http://inara.cz/",
-    "icon": ""
-  },
-  "forums": {
-    "href": "https://forums.frontier.co.uk/forumdisplay.php/29-Elite-Dangerous",
-    "icon": ""
+  load() {
+    return new Promise((resolve, reject) => {
+      fs.readFile(getOptionsPath("Graphics", "GraphicsConfigurationOverride.xml"), { encoding: "utf8" }, (err, data) => {
+        if (err) {
+          return reject(err);
+        }
+        graphicsConfig = XMLParser.parseFromString(data);
+        const [matrixRed] = graphicsConfig.getElementsByTagName("MatrixRed");
+        const [matrixGreen] = graphicsConfig.getElementsByTagName("MatrixGreen");
+        const [matrixBlue] = graphicsConfig.getElementsByTagName("MatrixBlue");
+        const matrix = [].concat(matrixRed.split(","))
+                         .concat(matrixGreen.split(","))
+                         .concat(matrixBlue.split(","))
+                         .map((value) => parseFloat(value));
+        return resolve(matrix);
+      });
+    });
   }
 };
+
 
 function openLink(link) {
   shell.openExternal(link.href);

@@ -112,7 +112,7 @@ gulp.task("templates", () => {
 });
 
 gulp.task("electron", () => {
-  gulp.src("src/electron/electron.js")
+  gulp.src("src/scripts/electron/electron.js")
     .pipe(gulp.dest("dist"));
 });
 

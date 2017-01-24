@@ -1,7 +1,5 @@
-$color = #fd7000
-//$color = #0070fd
-$size = 8px
-$time = 1s
+$LOADER_SIZE = 8px
+$LOADER_TIME = 1s
 
 .Loader
    display flex
@@ -14,23 +12,23 @@ $time = 1s
 .Loader__arrow
    width 0
    height 0
-   margin 0 (-($size / 2))
-   border-left $size solid transparent
-   border-right $size solid transparent
-   border-bottom ($size * 1.8) solid $color
-   animation blink $time infinite
-   filter drop-shadow(0 0 ($size * 1.5) $color)
+   margin 0 (-($LOADER_SIZE / 2))
+   border-left $LOADER_SIZE solid transparent
+   border-right $LOADER_SIZE solid transparent
+   border-bottom ($LOADER_SIZE * 1.8) solid $MAIN_COLOR
+   animation blink $LOADER_TIME infinite
+   filter drop-shadow(0 0 ($LOADER_SIZE * 1.5) $MAIN_COLOR)
 
    &.is--down
       transform rotate(180deg)
 
    for $i in (1..18)
       &.is--outer-{$i}
-         animation-delay -($time / 18) * $i
+         animation-delay -($LOADER_TIME / 18) * $i
 
    for $i in (1..6)
       &.is--inner-{$i}
-         animation-delay -($time / 6) * $i
+         animation-delay -($LOADER_TIME / 6) * $i
 
 @keyframes blink
    0%

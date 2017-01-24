@@ -1,3 +1,7 @@
+/**
+ * Estos son los temas por defecto de la aplicación, que a su vez
+ * son los temas de NO2O.
+ */
 export default [
   {
     "file": "lemon_chiffon_dark_orange",
@@ -27,7 +31,7 @@ export default [
       "no2o/ivory_sky_blue_image_0.jpg",
       "no2o/ivory_sky_blue_image_1.jpg"
     ],
-    "notes": "",
+    "notes": "Grayscale NPC pictures (some retain the blue channel)",
     "contributors": "Isinona, V'larr",
     "date": "3302-06-18",
     "matrix": [

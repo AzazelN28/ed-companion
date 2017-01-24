@@ -1,5 +1,5 @@
 import React from "react";
-import { getDefaultColor } from "./index.js";
+import { getDefaultColor } from "./utils.js";
 
 export function Assassin(props) {
   const fill = getDefaultColor(props);
@@ -1045,4 +1045,24 @@ export function Unknown(props) {
       </g>
     </svg>
   );
+}
+
+export default {
+  Assassin,
+  AssassinTimed,
+  Courier,
+  CourierTimed,
+  CourierNoScan,
+  CourierPlanet,
+  DataDelivery,
+  Delivery,
+  DeliveryPirate,
+  DeliveryPlanet,
+  DeliverySmuggle,
+  Hauling,
+  Mercenary,
+  Pirate,
+  PirateTimed,
+  SkimmerHunt,
+  Unknown
 }
