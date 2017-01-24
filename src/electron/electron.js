@@ -3,6 +3,9 @@ const path = require("path");
 const fs = require("fs");
 const chokidar = require("chokidar");
 const { BrowserWindow, app, shell } = electron;
+const xmldom = require("xmldom");
+const XMLParser = new xmldom.DOMParser();
+const XMLSerializer = new xmldom.XMLSerializer();
 
 let mainWindow = null;
 
@@ -139,6 +142,58 @@ function getJournalFile(filename) {
   });
 }
 
+function getGraphicsConfigurationOverride() {
+  return new Promise((resolve, reject) => {
+    fs.readFile(getOptionsPath("Graphics", "GraphicsConfigurationOverride.xml"), { encoding: "utf8" }, (err, data) => {
+      if (err) {
+        return reject(err);
+      }
+      return resolve(XMLParser.parseFromString(data));
+    });
+  });
+}
+
+function saveGraphicsConfigurationOverride(matrix = [1,0,0,0,0, 0,1,0,0,0, 0,0,1,0,0, 0,0,0,1,0]) {
+  return new Promise((resolve,reject) => {
+    const graphicsConfig = new xmldom.DOMImplementation().createDocument(null, "GraphicsConfig", null);
+    /*<GraphicsConfig>
+      <GUIColour>
+        <Default>
+          <LocalisationName>Standard</LocalisationName>
+          <MatrixRed> 1, 0, 0 </MatrixRed>
+          <MatrixGreen> 0, 1, 0 </MatrixGreen>
+          <MatrixBlue> 0, 0, 1 </MatrixBlue>
+        </Default>
+      </GUIColour>
+    </GraphicsConfig>*/
+    const guiColour = graphicsConfig.createElement("GUIColour");
+
+    const guiDefault = graphicsConfig.createElement("Default");
+
+    const localisationName = graphicsConfig.createElement("LocalisationName");
+    localisationName.textContent = "Standard";
+
+    const matrixRed = graphicsConfig.createElement("MatrixRed");
+    matrixRed.textContent = matrix.slice(0,3).join(", ");
+
+    const matrixGreen = graphicsConfig.createElement("MatrixGreen");
+    matrixGreen.textContent = matrix.slice(5,8).join(", ");
+
+    const matrixBlue = graphicsConfig.createElement("MatrixBlue");
+    matrixBlue.textContent = matrix.slice(10,13).join(", ");
+
+    graphicsConfig.documentElement.appendChild(guiColour);
+    guiColour.appendChild(guiDefault);
+    guiDefault.appendChild(localisationName);
+    guiDefault.appendChild(matrixRed);
+    guiDefault.appendChild(matrixGreen);
+    guiDefault.appendChild(matrixBlue);
+    console.log(XMLSerializer.serializeToString(graphicsConfig));
+    return resolve();
+    //fs.writeFile(getOptionsPath("Graphics", "GraphicsConfigurationOverride.xml"), { encoding: "utf8" }, XMLSerializer.serializeToString());
+  });
+}
+
 const links = {
   "ed": {
     "href": "https://www.elitedangerous.com/",
@@ -169,3 +224,13 @@ function openLink(link) {
 console.log("Journal path:", getJournalPath());
 console.log("Options path:", getOptionsPath());
 console.log("GraphicsConfigurationOverride path:", getOptionsPath("Graphics", "GraphicsConfigurationOverride.xml"));
+
+getGraphicsConfigurationOverride().then((config) => {
+  if (config.documentElement.childNodes.length === 0) {
+    console.log("User doesn't have a graphics configuration");
+  } else {
+    console.log("User has a graphics configuration");
+  }
+});
+
+saveGraphicsConfigurationOverride();
