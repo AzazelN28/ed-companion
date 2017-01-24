@@ -1,7 +1,8 @@
 import React from "react";
+import { getDefaultColor } from "./utils.js";
 
 export function GalNet(props) {
-  const fill = props.fill || "#fff";
+  const fill = getDefaultColor(props);
   return (
     <svg className="Icon" viewBox="0 0 909.352 757.507">
       <g>
@@ -29,7 +30,7 @@ export function GalNet(props) {
 }
 
 export function UniversalCartographics(props) {
-  const fill = props.fill || "#fff";
+  const fill = getDefaultColor(props);
   return (
     <svg className="Icon" viewBox="0 0 724.327 827.11">
       <path fill={fill} d={`M724.327,413.56c0,228.4-191.75,413.55-428.3,413.55c-28.88,0-29.521-10.031-5.706-13.93

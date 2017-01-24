@@ -1,17 +1,37 @@
 {
   "name": "elite-companion",
+  "description": "Elite: Dangerous Companion",
+  "productName": "Elite: Dangerous Companion",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "dist/electron.js",
   "license": "MIT",
+  "author": "AzazelN28 (https://github.com/AzazelN28)",
+  "homepage": "https://github.com/AzazelN28/ed-companion",
   "scripts": {
     "start": "gulp",
+    "build": "build",
     "community": "pageres www.elitedangerous.com www.edsm.net eddb.io inara.cz forums.frontier.co.uk/forumdisplay.php/29-Elite-Dangerous 1024x160 --filename='/dist/assets/images/community/<%= url %>' --delay=3 --crop"
+  },
+  "build": {
+    "appId": "com.azazeln28.elite-companion",
+    "copyright": "Copyright © 2017 AzazelN28",
+    "directories": {
+      "app": "dist",
+      "output": "releases"
+    },
+    "asar": false,
+    "mac": {
+      "category": "public.app-category.utilities",
+      "target": "dmg"
+    },
+    "win": {
+      "target": "zip"
+    }
   },
   "dependencies": {
     "cheerio": "^0.22.0",
     "chokidar": "^1.6.1",
     "classnames": "^2.2.5",
-    "electron": "^1.4.14",
     "electron-canvas-to-buffer": "^2.0.0",
     "i18next": "^6.0.1",
     "i18next-browser-languagedetector": "^1.0.1",
@@ -34,6 +54,8 @@
     "browser-sync": "^2.18.6",
     "browserify": "^13.3.0",
     "chai": "^3.5.0",
+    "electron": "^1.4.14",
+    "electron-builder": "^11.5.1",
     "envify": "^4.0.0",
     "exorcist": "^0.4.0",
     "gulp": "^3.9.1",
