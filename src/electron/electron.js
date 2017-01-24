@@ -153,10 +153,17 @@ function getGraphicsConfigurationOverride() {
   });
 }
 
+/**
+ * TODO: Esta función debería recibir dos parámetros, por una parte
+ * la configuración actual y por otra la nueva matriz de color a aplicar.
+ */
 function saveGraphicsConfigurationOverride(matrix = [1,0,0,0,0, 0,1,0,0,0, 0,0,1,0,0, 0,0,0,1,0]) {
   return new Promise((resolve,reject) => {
+
     const graphicsConfig = new xmldom.DOMImplementation().createDocument(null, "GraphicsConfig", null);
-    /*<GraphicsConfig>
+
+    /*
+    <GraphicsConfig>
       <GUIColour>
         <Default>
           <LocalisationName>Standard</LocalisationName>
@@ -165,7 +172,9 @@ function saveGraphicsConfigurationOverride(matrix = [1,0,0,0,0, 0,1,0,0,0, 0,0,1
           <MatrixBlue> 0, 0, 1 </MatrixBlue>
         </Default>
       </GUIColour>
-    </GraphicsConfig>*/
+    </GraphicsConfig>
+    */
+
     const guiColour = graphicsConfig.createElement("GUIColour");
 
     const guiDefault = graphicsConfig.createElement("Default");
